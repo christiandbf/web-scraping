@@ -14,5 +14,5 @@ Scraping:
         arn: !GetAtt Scraping.Arn
         batchSize: 1
   environment:
-    S3_REGION: ${self:provider.region}
     S3_BUCKET: !Ref ScreenshotsBucket
+    STREAM_NAME: !Ref ScrapingStream

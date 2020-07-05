@@ -1,9 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const chromeLambda = require('chrome-aws-lambda');
 
-const S3Client = require('aws-sdk/clients/s3');
+const AWS = require('aws-sdk');
 
-const s3 = new S3Client({ region: process.env.S3_REGION });
+const s3 = new AWS.S3({ region: process.env.AWS_REGION });
+const kinesis = new AWS.Kinesis({
+  apiVersion: '2013-12-02',
+  region: process.env.AWS_REGION,
+});
 
 const defaultViewport = {
   width: 1440,
@@ -40,6 +44,12 @@ exports.main = async (event) => {
       ACL: 'public-read',
     })
     .promise();
+
+  await kinesis.putRecord({
+    Data: JSON.stringify({ url: message.url, date: new Date(), screenshot: result.Location }),
+    PartitionKey: Date.now().toString(),
+    StreamName: process.env.STREAM_NAME,
+  }).promise();
 
   return { url: result.Location };
 };

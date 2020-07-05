@@ -21,6 +21,12 @@ provider:
         - s3:PutObject
         - s3:PutObjectAcl
       Resource: arn:aws:s3::*:*
+    - Effect: Allow
+      Action:
+        - kinesis:PutRecord
+        - kinesis:PutRecords
+        - kinesis:DescribeStream
+      Resource: arn:aws:kinesis:${self:provider.region}:*:*
 
 package:
   individually: true
@@ -37,3 +43,4 @@ resources:
   - ${file(Resource/s3-screenshot.yml)}
   - ${file(Resource/sqs-scraping.yml)}
   - ${file(Resource/sqs-scraping-dlq.yml)}
+  - ${file(Resource/kinesis-stream-scraping.yml)}
