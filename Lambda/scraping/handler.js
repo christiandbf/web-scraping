@@ -4,8 +4,8 @@ const chromeLambda = require('chrome-aws-lambda');
 const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3({ region: process.env.AWS_REGION });
-const kinesis = new AWS.Kinesis({
-  apiVersion: '2013-12-02',
+const firehose = new AWS.Firehose({
+  apiVersion: '2015-08-04',
   region: process.env.AWS_REGION,
 });
 
@@ -45,10 +45,11 @@ exports.main = async (event) => {
     })
     .promise();
 
-  await kinesis.putRecord({
-    Data: JSON.stringify({ url: message.url, date: new Date(), screenshot: result.Location }),
-    PartitionKey: Date.now().toString(),
-    StreamName: process.env.STREAM_NAME,
+  await firehose.putRecord({
+    DeliveryStreamName: process.env.STREAM_NAME,
+    Record: {
+      Data: JSON.stringify({ url: message.url, date: new Date(), screenshot: result.Location }),
+    },
   }).promise();
 
   return { url: result.Location };

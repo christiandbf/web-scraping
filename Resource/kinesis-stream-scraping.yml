@@ -1,6 +1,0 @@
-Resources:
-  ScrapingStream:
-    Type: AWS::Kinesis::Stream
-    Properties:
-      Name: scraping-stream-${self:provider.stage}
-      ShardCount: 1

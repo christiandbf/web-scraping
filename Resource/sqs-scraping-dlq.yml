@@ -2,5 +2,5 @@ Resources:
   ScrapingDLQ:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: scraping-dlq-${self:provider.stage}
+      QueueName: ${self:service}-${self:provider.stage}-scraping-dlq
       VisibilityTimeout: 30

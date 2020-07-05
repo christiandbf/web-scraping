@@ -1,5 +1,5 @@
 Scraping:
-  name: scraping-${self:provider.stage}
+  name: ${self:service}-${self:provider.stage}-scraping
   handler: Lambda/scraping/handler.main
   description: Scrape websites for information
   memorySize: 1024
@@ -15,4 +15,4 @@ Scraping:
         batchSize: 1
   environment:
     S3_BUCKET: !Ref ScreenshotsBucket
-    STREAM_NAME: !Ref ScrapingStream
+    STREAM_NAME: !Ref RecordFirehose

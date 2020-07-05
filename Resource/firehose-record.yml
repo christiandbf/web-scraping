@@ -1,0 +1,30 @@
+Resources:
+  RecordFirehoseRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ${self:service}-${self:provider.stage}-record-firehose-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - firehose.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+  RecordFirehose:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      DeliveryStreamName: ${self:service}-${self:provider.stage}-firehose-record
+      DeliveryStreamType: DirectPut
+      S3DestinationConfiguration:
+        BucketARN: !Join
+          - ""
+          - - "arn:aws:s3:::"
+            - !Ref RecordBucket
+        BufferingHints:
+          IntervalInSeconds: 60
+          SizeInMBs: 5
+        CompressionFormat: UNCOMPRESSED
+        RoleARN: !GetAtt RecordFirehoseRole.Arn

@@ -1,7 +1,7 @@
 Resources:
-  ScreenshotsBucket:
+  RecordBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete
     Properties:
-      BucketName: ${self:service}-${self:provider.stage}-scraping-screenshot
+      BucketName: ${self:service}-${self:provider.stage}-scraping-record
       AccessControl: Private
