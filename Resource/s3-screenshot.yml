@@ -1,0 +1,7 @@
+Resources:
+  ScreenshotsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: scraping-screenshot-files-${self:provider.stage}
+      AccessControl: Private

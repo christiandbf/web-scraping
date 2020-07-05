@@ -1,0 +1,12 @@
+Resources:
+  Scraping:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: scraping-${self:provider.stage}
+      VisibilityTimeout: 1500
+      RedrivePolicy:
+        deadLetterTargetArn:
+          'Fn::GetAtt':
+            - ScrapingDLQ
+            - Arn
+        maxReceiveCount: 5

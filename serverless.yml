@@ -1,0 +1,39 @@
+service: web-scraping
+
+frameworkVersion: "1.62.0"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  layers:
+    - arn:aws:lambda:${self:provider.region}:764866452798:layer:chrome-aws-lambda:10
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:GetQueueAttributes
+      Resource: arn:aws:sqs:${self:provider.region}:*:*
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:PutObjectAcl
+      Resource: arn:aws:s3::*:*
+
+package:
+  individually: true
+  exclude:
+    - ./**
+    - "!node_modules/**"
+
+# Add functions
+functions:
+  - ${file(Lambda/scraping/config.yml)}
+
+# Add resources
+resources:
+  - ${file(Resource/s3-screenshot.yml)}
+  - ${file(Resource/sqs-scraping.yml)}
+  - ${file(Resource/sqs-scraping-dlq.yml)}

@@ -1,0 +1,23 @@
+{
+  "name": "web-scraping",
+  "version": "1.0.0",
+  "description": "Just a simple web scraping service running on cloud",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "deploy:dev": "serverless deploy",
+    "deploy:test": "serverless deploy --stage test",
+    "deploy:prod": "serverless deploy --stage prod"
+  },
+  "author": "Christian Barrios",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "^2.611.0",
+    "chrome-aws-lambda": "^2.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "serverless": "1.62.0"
+  }
+}

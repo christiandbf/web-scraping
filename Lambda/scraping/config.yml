@@ -1,0 +1,18 @@
+Scraping:
+  name: scraping-${self:provider.stage}
+  handler: Lambda/scraping/handler.main
+  description: Scrape websites for information
+  memorySize: 1024
+  timeout: 300
+  reservedConcurrency: 50
+  provisionedConcurrency: 0
+  package:
+    include:
+      - ./Lambda/scraping/*
+  events:
+    - sqs:
+        arn: !GetAtt Scraping.Arn
+        batchSize: 1
+  environment:
+    S3_REGION: ${self:provider.region}
+    S3_BUCKET: !Ref ScreenshotsBucket
