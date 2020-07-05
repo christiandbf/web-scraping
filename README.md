@@ -1,6 +1,11 @@
 # Web Scraping
 
-Just a simple Web Scraping service running on cloud.
+Just a simple Web Scraping service running on cloud to learn:
+
+- Amazon Kinesis
+- Amazon Athena
+
+![Design](/assets/web-scraping.png)
 
 ## Useful commands
 
